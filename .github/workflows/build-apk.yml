@@ -24,8 +24,12 @@ jobs:
           channel: 'stable'
           cache: true
 
-      - name: Install dependencies
-        run: flutter pub get
+      - name: Create Flutter scaffold and merge source files
+        run: |
+          flutter create --project-name ciudad_rio_app --platforms android /tmp/app_scaffold
+          cp -r /tmp/app_scaffold/android .
+          cp -r /tmp/app_scaffold/test . 2>/dev/null || true
+          flutter pub get
 
       - name: Build APK
         run: flutter build apk --release --no-tree-shake-icons
