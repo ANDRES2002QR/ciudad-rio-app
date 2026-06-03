@@ -33,7 +33,18 @@ jobs:
         run: |
           flutter create --project-name ciudad_rio_app --platforms android .
           echo "android folder created"
-          ls android/
+
+      - name: Fix NDK version
+        run: |
+          GRADLE_FILE="android/app/build.gradle.kts"
+          if grep -q "ndkVersion" "$GRADLE_FILE"; then
+            sed -i 's/ndkVersion = .*/ndkVersion = "27.0.12077973"/' "$GRADLE_FILE"
+          else
+            sed -i '/android {/a\    ndkVersion = "27.0.12077973"' "$GRADLE_FILE"
+          fi
+          echo "NDK version set:"
+          grep -A2 "ndkVersion" "$GRADLE_FILE" || echo "not found, checking..."
+          cat "$GRADLE_FILE" | grep -i ndk || true
 
       - name: Install dependencies
         run: flutter pub get
