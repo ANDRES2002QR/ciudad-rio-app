@@ -89,23 +89,22 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     if (_perfil == null) return;
     setState(() => _cargandoTx = true);
     try {
-      var q = _supabase
+      final data = await _supabase
           .from('transacciones')
-          .select('tipo, resultado, fecha, torre:torre_id(nombre), usuario:usuario_id(nombres, apellidos)')
+          .select('tipo, resultado, fecha, torre:torre_id(nombre), usuario:usuario_id(nombres, apellidos, empresa_id)')
           .order('fecha', ascending: false)
-          .limit(50);
+          .limit(100);
 
-      if (_perfil!['rol'] == 'admin_empresa') {
-        final empIds = await _supabase
-            .from('usuarios')
-            .select('id')
-            .eq('empresa_id', _perfil!['empresa_id']);
-        final ids = (empIds as List).map((e) => e['id'] as String).toList();
-        q = q.inFilter('usuario_id', ids);
+      var lista = List<Map<String, dynamic>>.from(data);
+
+      // Filtrar por empresa si es admin
+      if (_perfil!['rol'] == 'admin_empresa' && _perfil!['empresa_id'] != null) {
+        lista = lista.where((t) =>
+          t['usuario']?['empresa_id'] == _perfil!['empresa_id']
+        ).toList();
       }
 
-      final data = await q;
-      setState(() => _transacciones = List<Map<String, dynamic>>.from(data));
+      setState(() => _transacciones = lista.take(50).toList());
     } catch (e) {
       debugPrint('Error cargando transacciones: $e');
     }
