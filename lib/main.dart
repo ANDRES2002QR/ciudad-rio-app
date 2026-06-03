@@ -5,7 +5,7 @@ import 'screens/home_screen.dart';
 
 // Reemplaza estos valores con los de tu proyecto Supabase
 const String supabaseUrl  = 'https://yqcvhntfmsmdfnjxdlrr.supabase.co';
-const String supabaseKey  = 'sb_publishable_v7Gf_kOEv8Qf4YNQaKwtmQ_3aucyVul';
+const String supabaseKey  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlxY3ZobnRmbXNtZGZuanhkbHJyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAzNTQ5NTQsImV4cCI6MjA5NTkzMDk1NH0.58Mtv1UXSOj4Re61HuCrHRcfWant4fTnxj2eDlnSKpA';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -50,3 +50,4 @@ class AuthGate extends StatelessWidget {
     );
   }
 }
+
